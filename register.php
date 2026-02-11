@@ -14,14 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['confirm_password'];
 
     // Validation
-    if (empty($username) || empty($email) || empty($password)) {
+    if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
         $errors[] = "All fields are required.";
     }
-    if ($password !== $confirm_password) {
-        $errors[] = "Passwords do not match.";
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
     }
-    if (strlen($password) < 6) {
+    elseif (strlen($password) < 6) {
         $errors[] = "Password must be at least 6 characters.";
+    }
+    elseif ($password !== $confirm_password) {
+        $errors[] = "Passwords do not match.";
     }
 
     // Check if email exists
@@ -84,11 +87,11 @@ endif; ?>
                     </div>
                     <div class="mb-3">
                         <label>Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control" required minlength="6">
                     </div>
                     <div class="mb-3">
                         <label>Confirm Password</label>
-                        <input type="password" name="confirm_password" class="form-control" required>
+                        <input type="password" name="confirm_password" class="form-control" required minlength="6">
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Register</button>
                 </form>

@@ -15,8 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image_path = null;
 
     // Validation
+    $allowed_status = ['lost', 'found'];
+    $allowed_categories = ['Electronics', 'Documents', 'Pets', 'Wallet/Bag', 'Clothing', 'Other'];
+
     if (empty($title) || empty($status) || empty($location)) {
         $errors[] = "Title, Status, and Location are required.";
+    }
+    elseif (!in_array($status, $allowed_status)) {
+        $errors[] = "Invalid status selected.";
+    }
+    elseif (!empty($category) && !in_array($category, $allowed_categories)) {
+    // Optional: you can choose to allow custom categories or strict validation
+    // for now, let's allow custom but maybe warn? or strict. 
+    // Let's stick to strict if we want robust validation, or loose if we want flexibility.
+    // User asked for "most" validation, so let's check against a list but maybe allow 'Other' or just not error if it's custom?
+    // Let's enforce the list for now for "robustness".
+    // Actually, the datalist suggests these are suggestions. Let's just validate status strictly.
     }
 
     // Image Upload
@@ -149,15 +163,10 @@ endif; ?>
 
                     <div class="mb-3">
                         <label>Image (Optional)</label>
-                        <input type="file" name="image" class="form-control">
+                        <input type="file" name="image" class="form-control" accept=".jpg,.jpeg,.png,.gif">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Post Item</button>
                     <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
                 </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php require_once 'includes/footer.php'; ?>
+            </div> 'includes/footer.php'; ?>

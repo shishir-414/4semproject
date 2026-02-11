@@ -31,8 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image_path = $item['image_path']; // Keep existing image by default
 
     // Validation
+    $allowed_status = ['lost', 'found'];
+    $allowed_categories = ['Electronics', 'Documents', 'Pets', 'Wallet/Bag', 'Clothing', 'Other'];
+
     if (empty($title) || empty($status) || empty($location)) {
         $errors[] = "Title, Status, and Location are required.";
+    }
+    elseif (!in_array($status, $allowed_status)) {
+        $errors[] = "Invalid status selected.";
+    }
+    elseif (!empty($category) && !in_array($category, $allowed_categories)) {
+        $errors[] = "Invalid category selected.";
     }
 
     // Image Upload (Optional Replacement)
@@ -145,7 +154,7 @@ else: ?>
 endif; ?>
                         <div class="mt-2">
                             <label>Change Image (Optional)</label>
-                            <input type="file" name="image" class="form-control">
+                            <input type="file" name="image" class="form-control" accept=".jpg,.jpeg,.png,.gif">
                         </div>
                     </div>
 
